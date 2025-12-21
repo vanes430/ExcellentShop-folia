@@ -52,9 +52,11 @@ public class ShopManager extends AbstractManager<ShopPlugin> {
         this.loadUI();
         this.loadCartUIs();
 
-        this.addTask(this::updateShops, Config.SHOP_UPDATE_INTERVAL.get());
+        //this.addTask(this::updateShops, Config.SHOP_UPDATE_INTERVAL.get());
+        this.plugin.runFoliaTaskTimer(this::updateShops, Config.SHOP_UPDATE_INTERVAL.get(), Config.SHOP_UPDATE_INTERVAL.get());
 
-        this.plugin.runTaskLater(task -> this.printBadProducts(), 100L);
+        //this.plugin.runTaskLater(task -> this.printBadProducts(), 100L);
+        this.plugin.runFoliaTaskLater(this::printBadProducts, 100L);
     }
 
     @Override

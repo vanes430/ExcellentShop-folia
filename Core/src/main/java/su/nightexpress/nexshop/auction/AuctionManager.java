@@ -210,11 +210,11 @@ public class AuctionManager extends AbstractModule {
             .onAccept((viewer, event) -> {
                 this.buy(player, listing);
                 if (!AuctionConfig.MENU_REOPEN_ON_PURCHASE.get()) {
-                    this.plugin.runTask(task -> player.closeInventory());
+                    this.plugin.runFoliaTask(player::closeInventory);
                 }
             })
             .onReturn((viewer, event) -> {
-                this.plugin.runTask(task -> this.openAuction(viewer.getPlayer()));
+                this.plugin.runFoliaTask(() -> this.openAuction(viewer.getPlayer()));
             })
             .setIcon(NightItem.fromItemStack(listing.getItemStack()).localized(AuctionLang.UI_BUY_CONFIRM).replacement(replacer -> replacer.replace(listing.replacePlaceholders())))
             .returnOnAccept(AuctionConfig.MENU_REOPEN_ON_PURCHASE.get())
@@ -399,7 +399,7 @@ public class AuctionManager extends AbstractModule {
         if (event.isCancelled()) return null;
 
         this.listings.add(listing);
-        this.plugin.runTaskAsync(task -> this.database.addListing(listing));
+        this.plugin.runFoliaTaskAsync(() -> this.database.addListing(listing));
 
         AuctionLang.LISTING_ADD_SUCCESS_INFO.message().send(player, replacer -> replacer
             .replace(Placeholders.GENERIC_TAX, currency.format(taxPay))
@@ -439,7 +439,7 @@ public class AuctionManager extends AbstractModule {
 
         this.listings.remove(listing);
         this.listings.addCompleted(completedListing);
-        this.plugin.runTaskAsync(task -> {
+        this.plugin.runFoliaTaskAsync(() -> {
             this.database.addCompletedListing(completedListing);
             this.database.deleteListing(listing);
         });
@@ -471,7 +471,7 @@ public class AuctionManager extends AbstractModule {
 
         Players.addItem(player, listing.getItemStack());
         this.listings.remove(listing);
-        this.plugin.runTaskAsync(task -> this.database.deleteListing(listing));
+        this.plugin.runFoliaTaskAsync(() -> this.database.deleteListing(listing));
 
         this.mainMenu.flush();
     }
@@ -489,7 +489,7 @@ public class AuctionManager extends AbstractModule {
             AuctionLang.LISTING_CLAIM_SUCCESS.message().send(player, replacer -> replacer.replace(listing.replacePlaceholders()));
         }
 
-        this.plugin.runTaskAsync(task -> this.database.saveCompletedListings(listings));
+        this.plugin.runFoliaTaskAsync(() -> this.database.saveCompletedListings(listings));
     }
 
     public boolean canBeUsedHere(@NotNull Player player) {

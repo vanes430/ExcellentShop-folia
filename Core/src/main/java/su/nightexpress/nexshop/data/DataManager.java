@@ -45,11 +45,9 @@ public class DataManager extends AbstractManager<ShopPlugin> {
 
     @Override
     protected void onLoad() {
-        this.plugin.runTaskAsync(task -> {
-            this.loadAllData(); // Load all price & stock datas for all products, then update prices.
-        });
+        this.plugin.runFoliaTaskAsync(this::loadAllData);
 
-        this.addAsyncTask(this::saveScheduledDatas, Config.DATA_SAVE_INTERVAL.get());
+        this.plugin.runFoliaTaskTimer(this::saveScheduledDatas, Config.DATA_SAVE_INTERVAL.get(), Config.DATA_SAVE_INTERVAL.get());
     }
 
     @Override
@@ -148,7 +146,7 @@ public class DataManager extends AbstractManager<ShopPlugin> {
 
 
     public void deleteAllData(@NotNull VirtualShop shop) {
-        this.plugin.runTaskAsync(task -> {
+        this.plugin.runFoliaTaskAsync(() -> {
             // First remove from the database.
             this.plugin.getDataHandler().deleteRotationData(shop);
             this.plugin.getDataHandler().deletePriceData(shop);
@@ -185,12 +183,12 @@ public class DataManager extends AbstractManager<ShopPlugin> {
 
         RotationData data = new RotationData(rotation.getShop().getId(), rotation.getId());
         this.loadRotationData(data);
-        this.plugin.runTaskAsync(task -> plugin.getDataHandler().insertRotationData(data));
+        this.plugin.runFoliaTaskAsync(() -> plugin.getDataHandler().insertRotationData(data));
         return data;
     }
 
     public void deleteRotationData(@NotNull Rotation rotation) {
-        this.plugin.runTaskAsync(task -> {
+        this.plugin.runFoliaTaskAsync(() -> {
             this.plugin.getDataHandler().deleteRotationData(rotation); // First remove from the database.
             this.rotationDataMap.remove(RotationKey.from(rotation)); // Now clean up memory (so no duplicates can be created during the deletion process).
         });
@@ -230,7 +228,7 @@ public class DataManager extends AbstractManager<ShopPlugin> {
 
         PriceData fresh = PriceData.create(product);
         this.loadPriceData(fresh);
-        this.plugin.runTaskAsync(task -> this.plugin.getDataHandler().insertPriceData(fresh));
+        this.plugin.runFoliaTaskAsync(() -> this.plugin.getDataHandler().insertPriceData(fresh));
         return fresh;
     }
 
@@ -242,7 +240,7 @@ public class DataManager extends AbstractManager<ShopPlugin> {
     }
 
     public void deletePriceData(@NotNull Product product) {
-        this.plugin.runTaskAsync(task -> {
+        this.plugin.runFoliaTaskAsync(() -> {
             this.plugin.getDataHandler().deletePriceData(product); // First remove from the database.
             this.priceDataMap.remove(ProductKey.global(product)); // Now clean up memory (so no duplicates can be created during the deletion process).
         });
@@ -328,12 +326,12 @@ public class DataManager extends AbstractManager<ShopPlugin> {
 
         StockData fresh = StockData.create(product, values, playerId);
         this.loadStockData(fresh);
-        this.plugin.runTaskAsync(task -> plugin.getDataHandler().insertStockData(fresh));
+        this.plugin.runFoliaTaskAsync(() -> plugin.getDataHandler().insertStockData(fresh));
         return fresh;
     }
 
     public void deleteStockData(@NotNull VirtualProduct product) {
-        this.plugin.runTaskAsync(task -> {
+        this.plugin.runFoliaTaskAsync(() -> {
             this.plugin.getDataHandler().deleteStockData(product);  // First remove from the database.
             this.stockDataMap.remove(ProductKey.global(product)); // Now clean up memory (so no duplicates can be created during the deletion process).
         });

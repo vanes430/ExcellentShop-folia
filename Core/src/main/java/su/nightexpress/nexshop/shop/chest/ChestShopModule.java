@@ -122,10 +122,10 @@ public class ChestShopModule extends AbstractModule implements ShopModule {
 
         this.addListener(new ShopListener(this.plugin, this));
 
-        this.addAsyncTask(this::saveShopsIfRequired, ChestConfig.SAVE_INTERVAL.get());
+        this.plugin.runFoliaTaskTimer(this::saveShopsIfRequired, ChestConfig.SAVE_INTERVAL.get(), ChestConfig.SAVE_INTERVAL.get());
 
-        this.plugin.runTaskAsync(task -> this.loadBanks());
-        this.plugin.runTask(task -> this.lookup().getAll().forEach(this::activateShop));
+        this.plugin.runFoliaTaskAsync(this::loadBanks);
+        this.plugin.runFoliaTask(() -> this.lookup().getAll().forEach(this::activateShop));
     }
 
     private void loadConfig(@NotNull FileConfig config) {
@@ -414,7 +414,7 @@ public class ChestShopModule extends AbstractModule implements ShopModule {
         ChestBank bank = this.getBankMap().get(uuid);
         if (bank == null) {
             ChestBank bank2 = new ChestBank(uuid, new HashMap<>());
-            this.plugin.runTaskAsync(task -> this.plugin.getDataHandler().createChestBank(bank2));
+            this.plugin.runFoliaTaskAsync(() -> this.plugin.getDataHandler().createChestBank(bank2));
             this.getBankMap().put(uuid, bank2);
             return bank2;
         }
@@ -429,7 +429,7 @@ public class ChestShopModule extends AbstractModule implements ShopModule {
     }
 
     public void savePlayerBank(@NotNull ChestBank bank) {
-        this.plugin.runTaskAsync(task -> this.plugin.getDataHandler().saveChestBank(bank));
+        this.plugin.runFoliaTaskAsync(() -> this.plugin.getDataHandler().saveChestBank(bank));
     }
 
     @NotNull
@@ -622,7 +622,7 @@ public class ChestShopModule extends AbstractModule implements ShopModule {
             if (shop.isRentable() && !shop.isRented()) {
                 UIUtils.openConfirmation(player, Confirmation.builder()
                     .onAccept((viewer, event1) -> this.rentShopOrExtend(player, shop))
-                    .onReturn((viewer, event1) -> this.plugin.runTask(task -> player.closeInventory()))
+                    .onReturn((viewer, event1) -> this.plugin.runFoliaTask(player::closeInventory))
                     .returnOnAccept(true)
                     .build());
                 return;

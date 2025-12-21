@@ -104,7 +104,7 @@ public class ShopListener extends AbstractListener<ShopPlugin> {
             EquipmentSlot slot = event.getHand();
             Block block = event.getBlockPlaced();
 
-            this.plugin.runTask(task -> {
+            this.plugin.runFoliaTask(() -> {
                 if (this.module.createShopFromItem(player, block, itemStack)) {
                     player.getInventory().setItem(slot, itemStack);
                 }
@@ -225,7 +225,7 @@ public class ShopListener extends AbstractListener<ShopPlugin> {
                 // https://www.spigotmc.org/threads/581448/
                 // https://www.spigotmc.org/threads/534714/
 
-                this.plugin.runTask(task -> {
+                this.plugin.runFoliaTask(() -> {
                     if (!(block.getState() instanceof Hopper hopper)) return; // Obtain fresh Hopper instance, do not trust this damn event anymore.
 
                     Inventory hopperInv = hopper.getInventory();
