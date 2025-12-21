@@ -74,13 +74,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.tcoded</groupId>
-            <artifactId>FoliaLib</artifactId>
-            <version>0.5.1</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>event-api</artifactId>
             <version>3.0.0</version>
@@ -196,15 +189,8 @@
                             <artifactSet>
                                 <includes>
                                     <include>su.nightexpress.excellentshop:*</include>
-                                    <include>com.tcoded:FoliaLib</include>
                                 </includes>
                             </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.tcoded.folialib</pattern>
-                                    <shadedPattern>su.nightexpress.excellentshop.lib.folialib</shadedPattern>
-                                </relocation>
-                            </relocations>
                         </configuration>
                     </execution>
                 </executions>

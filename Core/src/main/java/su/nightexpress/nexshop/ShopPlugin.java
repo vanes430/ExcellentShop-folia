@@ -1,6 +1,6 @@
 package su.nightexpress.nexshop;
 
-import com.tcoded.folialib.FoliaLib;
+import su.nightexpress.nightcore.lib.folialib.FoliaLib;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nexshop.api.module.Module;
@@ -40,8 +40,6 @@ import java.util.Set;
 
 public class ShopPlugin extends NightPlugin implements ImprovedCommands {
 
-    private FoliaLib foliaLib;
-
     private DataHandler dataHandler;
     private DataManager dataManager;
     private UserManager userManager;
@@ -78,8 +76,6 @@ public class ShopPlugin extends NightPlugin implements ImprovedCommands {
 
     @Override
     public void enable() {
-        this.foliaLib = new FoliaLib(this);
-
         if (!Plugins.hasEconomyBridge()) {
             this.error(Plugins.ECONOMY_BRIDGE + " is not installed!");
             this.error("Please install " + Plugins.ECONOMY_BRIDGE + " to run ExcellentShop.");
@@ -162,25 +158,20 @@ public class ShopPlugin extends NightPlugin implements ImprovedCommands {
         rootNode.addChildren(ReloadCommand.builder(this, Perms.COMMAND_RELOAD));
     }
 
-    @NotNull
-    public FoliaLib getFoliaLib() {
-        return this.foliaLib;
-    }
-
     public void runFoliaTask(@NotNull Runnable runnable) {
-        this.foliaLib.getImpl().runNextTick(task -> runnable.run());
+        this.getFoliaLib().getImpl().runNextTick(task -> runnable.run());
     }
 
     public void runFoliaTaskAsync(@NotNull Runnable runnable) {
-        this.foliaLib.getImpl().runAsync(task -> runnable.run());
+        this.getFoliaLib().getImpl().runAsync(task -> runnable.run());
     }
 
     public void runFoliaTaskLater(@NotNull Runnable runnable, long delay) {
-        this.foliaLib.getImpl().runLater(task -> runnable.run(), delay * 50L, java.util.concurrent.TimeUnit.MILLISECONDS);
+        this.getFoliaLib().getImpl().runLater(task -> runnable.run(), delay * 50L, java.util.concurrent.TimeUnit.MILLISECONDS);
     }
 
     public void runFoliaTaskTimer(@NotNull Runnable runnable, long delay, long period) {
-        this.foliaLib.getImpl().runTimer(task -> runnable.run(), delay * 50L, period * 50L, java.util.concurrent.TimeUnit.MILLISECONDS);
+        this.getFoliaLib().getImpl().runTimer(task -> runnable.run(), delay * 50L, period * 50L, java.util.concurrent.TimeUnit.MILLISECONDS);
     }
 
     @NotNull
