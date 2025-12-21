@@ -15,4 +15,4 @@ mvn install:install-file -Dfile=libs/nightcore-2.7.15.jar -DgroupId=su.nightexpr
 # Build the project
 echo "Building project..."
 mvn clean
-mvn install -U
+mvn install
