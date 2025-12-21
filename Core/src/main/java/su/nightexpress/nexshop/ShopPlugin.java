@@ -1,5 +1,6 @@
 package su.nightexpress.nexshop;
 
+import com.tcoded.folialib.FoliaLib;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nexshop.api.module.Module;
@@ -39,6 +40,8 @@ import java.util.Set;
 
 public class ShopPlugin extends NightPlugin implements ImprovedCommands {
 
+    private FoliaLib foliaLib;
+
     private DataHandler dataHandler;
     private DataManager dataManager;
     private UserManager userManager;
@@ -75,6 +78,8 @@ public class ShopPlugin extends NightPlugin implements ImprovedCommands {
 
     @Override
     public void enable() {
+        this.foliaLib = new FoliaLib(this);
+
         if (!Plugins.hasEconomyBridge()) {
             this.error(Plugins.ECONOMY_BRIDGE + " is not installed!");
             this.error("Please install " + Plugins.ECONOMY_BRIDGE + " to run ExcellentShop.");
@@ -155,6 +160,11 @@ public class ShopPlugin extends NightPlugin implements ImprovedCommands {
         ChainedNode rootNode = this.getRootNode();
 
         rootNode.addChildren(ReloadCommand.builder(this, Perms.COMMAND_RELOAD));
+    }
+
+    @NotNull
+    public FoliaLib getFoliaLib() {
+        return this.foliaLib;
     }
 
     @NotNull

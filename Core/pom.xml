@@ -58,6 +58,11 @@
             <url>https://repo.glaremasters.me/repository/bloodshot</url>
         </repository>
 
+        <repository>
+            <id>tcoded-releases</id>
+            <url>https://repo.tcoded.com/releases</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
@@ -66,6 +71,13 @@
             <artifactId>paper-api</artifactId>
             <version>1.21.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tcoded</groupId>
+            <artifactId>FoliaLib</artifactId>
+            <version>0.5.1</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -172,7 +184,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -184,8 +196,15 @@
                             <artifactSet>
                                 <includes>
                                     <include>su.nightexpress.excellentshop:*</include>
+                                    <include>com.tcoded:FoliaLib</include>
                                 </includes>
                             </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.tcoded.folialib</pattern>
+                                    <shadedPattern>su.nightexpress.excellentshop.lib.folialib</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
