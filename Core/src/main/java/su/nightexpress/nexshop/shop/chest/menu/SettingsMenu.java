@@ -28,7 +28,10 @@ import su.nightexpress.nightcore.ui.menu.item.ItemHandler;
 import su.nightexpress.nightcore.ui.menu.item.ItemOptions;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.ui.menu.type.LinkedMenu;
+import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.Lists;
+import su.nightexpress.nightcore.util.NumberUtil;
+import su.nightexpress.nightcore.util.PDCUtil;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 import java.util.stream.IntStream;
@@ -59,9 +62,9 @@ public class SettingsMenu extends LinkedMenu<ShopPlugin, ChestShop> implements C
 
         item.replacement(replacer -> replacer
             .replace(this.getLink(viewer).replacePlaceholders())
-            .replace(GENERIC_MAX_PRODUCTS, () -> ShopUtils.formatOrInfinite(ChestUtils.getProductLimit(player)))
-            .replace(GENERIC_MAX_SHOPS, () -> ShopUtils.formatOrInfinite(ChestUtils.getShopLimit(player)))
-            .replace(GENERIC_SHOPS_AMOUNT, () -> ShopUtils.formatOrInfinite(this.module.countShops(player)))
+            .replace(GENERIC_MAX_PRODUCTS, () -> NumberUtil.format(ChestUtils.getProductLimit(player)))
+            .replace(GENERIC_MAX_SHOPS, () -> NumberUtil.format(ChestUtils.getShopLimit(player)))
+            .replace(GENERIC_SHOPS_AMOUNT, () -> NumberUtil.format(this.module.countShops(player)))
         );
     }
 

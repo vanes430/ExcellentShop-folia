@@ -380,11 +380,11 @@ public class Placeholders extends su.nightexpress.nightcore.util.Placeholders {
 
     public static final PlaceholderList<ProductPOV<ChestProduct>> CHEST_PRODUCT = PlaceholderList.create(list -> {
         list.add(PRODUCT)
-            .add(PRODUCT_AMOUNT, pov -> ShopUtils.formatOrInfinite(pov.product.getCachedAmount()))
-            .add(PRODUCT_SPACE, pov -> ShopUtils.formatOrInfinite(pov.product.getCachedSpace()))
-            .add(PRODUCT_CAPACITY, pov -> ShopUtils.formatOrInfinite(pov.product.getCachedCapacity()))
-            .add(PRODUCT_STOCK_AMOUNT_LEFT.apply(TradeType.BUY), pov -> ShopUtils.formatOrInfinite(pov.product.getCachedAmount()))
-            .add(PRODUCT_STOCK_AMOUNT_LEFT.apply(TradeType.SELL), pov -> ShopUtils.formatOrInfinite(pov.product.getCachedSpace()))
+            .add(PRODUCT_AMOUNT, pov -> NumberUtil.format(pov.product.getCachedAmount()))
+            .add(PRODUCT_SPACE, pov -> NumberUtil.format(pov.product.getCachedSpace()))
+            .add(PRODUCT_CAPACITY, pov -> NumberUtil.format(pov.product.getCachedCapacity()))
+            .add(PRODUCT_STOCK_AMOUNT_LEFT.apply(TradeType.BUY), pov -> NumberUtil.format(pov.product.getCachedAmount()))
+            .add(PRODUCT_STOCK_AMOUNT_LEFT.apply(TradeType.SELL), pov -> NumberUtil.format(pov.product.getCachedSpace()))
             ;
     });
 

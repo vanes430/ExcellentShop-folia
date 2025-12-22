@@ -50,15 +50,6 @@ public class ShopUtils {
         return dateFormatter;
     }
 
-    public static boolean canUseDialogs() {
-        return Version.isAtLeast(Version.MC_1_21_7);
-    }
-
-    @NotNull
-    public static String formatOrInfinite(double value) {
-        return value < 0 ? CoreLang.OTHER_INFINITY.text() : NumberUtil.format(value);
-    }
-
     public static boolean hasCurrencyPermission(@NotNull Player player, @NotNull Currency currency) {
         boolean hasOldPerm = player.hasPermission(ChestPerms.PREFIX + "currency." + currency.getInternalId());
 
@@ -138,101 +129,7 @@ public class ShopUtils {
             .filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
-    public static int countItemSpace(@NotNull Inventory inventory, @NotNull ItemStack item) {
-        return countItemSpace(inventory, item::isSimilar, item.getMaxStackSize());
-    }
-
-    public static int countItemSpace(@NotNull Inventory inventory, @NotNull Predicate<ItemStack> predicate, int maxSize) {
-        return Stream.of(inventory.getStorageContents()).mapToInt(itemHas -> {
-            if (itemHas == null || itemHas.getType().isAir()) {
-                return maxSize;
-            }
-            if (predicate.test(itemHas)) {
-                return (maxSize - itemHas.getAmount());
-            }
-            return 0;
-        }).sum();
-    }
-
-    public static int countItem(@NotNull Inventory inventory, @NotNull Predicate<ItemStack> predicate) {
-        return Stream.of(inventory.getContents())
-            .filter(item -> item != null && !item.getType().isAir() && predicate.test(item))
-            .mapToInt(ItemStack::getAmount).sum();
-    }
-
-    public static int countItem(@NotNull Inventory inventory, @NotNull ItemStack item) {
-        return countItem(inventory, item::isSimilar);
-    }
-
-    public static int countItem(@NotNull Inventory inventory, @NotNull Material material) {
-        return countItem(inventory, itemHas -> itemHas.getType() == material);
-    }
-
-    public static boolean takeItem(@NotNull Inventory inventory, @NotNull ItemStack item) {
-        return takeItem(inventory, itemHas -> itemHas.isSimilar(item), countItem(inventory, item));
-    }
-
-    public static boolean takeItem(@NotNull Inventory inventory, @NotNull ItemStack item, int amount) {
-        return takeItem(inventory, itemHas -> itemHas.isSimilar(item), amount);
-    }
-
-    public static boolean takeItem(@NotNull Inventory inventory, @NotNull Material material) {
-        return takeItem(inventory, itemHas -> itemHas.getType() == material, countItem(inventory, material));
-    }
-
-    public static boolean takeItem(@NotNull Inventory inventory, @NotNull Material material, int amount) {
-        return takeItem(inventory, itemHas -> itemHas.getType() == material, amount);
-    }
-
-    public static boolean takeItem(@NotNull Inventory inventory, @NotNull Predicate<ItemStack> predicate) {
-        return takeItem(inventory, predicate, countItem(inventory, predicate));
-    }
-
-    public static boolean takeItem(@NotNull Inventory inventory, @NotNull Predicate<ItemStack> predicate, int amount) {
-        int takenAmount = 0;
-
-        for (ItemStack itemHas : inventory.getContents()) {
-            if (itemHas == null || !predicate.test(itemHas)) continue;
-
-            int hasAmount = itemHas.getAmount();
-            if (takenAmount + hasAmount > amount) {
-                int diff = (takenAmount + hasAmount) - amount;
-                itemHas.setAmount(diff);
-                break;
-            }
-
-            itemHas.setAmount(0);
-            if ((takenAmount += hasAmount) == amount) {
-                break;
-            }
-        }
-        return true;
-    }
-
-    public static void addItem(@NotNull Inventory inventory, @NotNull ItemStack... items) {
-        Arrays.asList(items).forEach(item -> addItem(inventory, item, item.getAmount()));
-    }
-
-    public static boolean addItem(@NotNull Inventory inventory, @NotNull ItemStack origin, int amount) {
-        if (amount <= 0 || origin.getType().isAir()) return false;
-        if (countItemSpace(inventory, origin) < amount) return false;
-
-        Location location = inventory.getLocation();
-        World world = location == null ? null : location.getWorld();
-
-        ItemStack split = new ItemStack(origin);
-
-        int splitAmount = Math.min(split.getMaxStackSize(), amount);
-        split.setAmount(splitAmount);
-        inventory.addItem(split).values().forEach(left -> {
-            if (world != null) {
-                world.dropItem(location, left);
-            }
-        });
-
-        amount -= splitAmount;
-        if (amount > 0) addItem(inventory, origin, amount);
-
-        return true;
+    public static boolean canUseDialogs() {
+        return Version.isAtLeast(Version.MC_1_21_7);
     }
 }

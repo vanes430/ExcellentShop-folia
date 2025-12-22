@@ -18,8 +18,8 @@ import su.nightexpress.nexshop.product.type.ProductTypes;
 import su.nightexpress.nexshop.shop.chest.ChestUtils;
 import su.nightexpress.nexshop.shop.impl.AbstractProduct;
 import su.nightexpress.nexshop.util.ErrorHandler;
-import su.nightexpress.nexshop.util.ShopUtils;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.util.Players;
 
 import java.util.UUID;
 import java.util.function.UnaryOperator;
@@ -156,7 +156,7 @@ public class ChestProduct extends AbstractProduct<ChestShop> {
         Inventory inventory = this.shop.inventory();
         if (inventory == null) return false; // Shop container is not valid anymore.
 
-        ShopUtils.takeItem(inventory, typing::isItemMatches, amount);
+        Players.takeItem(inventory, typing.getItem(), amount);
         this.updateStockCache();
         return true;
     }
@@ -169,7 +169,7 @@ public class ChestProduct extends AbstractProduct<ChestShop> {
         int amount = Math.abs(units * this.getUnitAmount());
 
         if (ChestUtils.isInfiniteStorage()) {
-            this.setQuantity(this.quantity + amount);
+            this.setQuantity(this.quantity - amount);
             this.updateStockCache();
             return true;
         }
@@ -177,7 +177,7 @@ public class ChestProduct extends AbstractProduct<ChestShop> {
         Inventory inventory = this.shop.inventory();
         if (inventory == null) return false; // Shop container is not valid anymore.
 
-        if (ShopUtils.addItem(inventory, typing.getItem(), amount)) {
+        if (Players.addItem(inventory, inventory.getLocation(), typing.getItem(), amount)) {
             this.updateStockCache();
             return true;
         }

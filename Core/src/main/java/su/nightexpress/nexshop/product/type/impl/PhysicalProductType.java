@@ -10,6 +10,7 @@ import su.nightexpress.nexshop.config.Lang;
 import su.nightexpress.nexshop.util.ShopUtils;
 import su.nightexpress.nexshop.util.UnitUtils;
 import su.nightexpress.nightcore.util.PDCUtil;
+import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 
 public abstract class PhysicalProductType implements PhysicalTyping {
@@ -30,18 +31,18 @@ public abstract class PhysicalProductType implements PhysicalTyping {
     @Override
     public void delivery(@NotNull Inventory inventory, int count) {
         //int amount = this.getUnitAmount() * count;
-        ShopUtils.addItem(inventory, this.getItem(), UnitUtils.unitsToAmount(this.getUnitAmount(), count));
+        Players.addItem(inventory, inventory.getLocation(), this.getItem(), UnitUtils.unitsToAmount(this.getUnitAmount(), count));
     }
 
     @Override
     public void take(@NotNull Inventory inventory, int count) {
         //int amount = this.getUnitAmount() * count;
-        ShopUtils.takeItem(inventory, this::isItemMatches, UnitUtils.unitsToAmount(this.getUnitAmount(), count));
+        Players.takeItem(inventory, this.getItem(), UnitUtils.unitsToAmount(this.getUnitAmount(), count));
     }
 
     @Override
     public int count(@NotNull Inventory inventory) {
-        return ShopUtils.countItem(inventory, this::isItemMatches);
+        return Players.countItem(inventory, this.getItem());
     }
 
     @Override
@@ -52,7 +53,7 @@ public abstract class PhysicalProductType implements PhysicalTyping {
 
     @Override
     public int countSpace(@NotNull Inventory inventory) {
-        return ShopUtils.countItemSpace(inventory, this::isItemMatches, this.getItem().getMaxStackSize());
+        return Players.countItemSpace(inventory, this::isItemMatches, this.getItem().getMaxStackSize());
     }
 
     @Override
