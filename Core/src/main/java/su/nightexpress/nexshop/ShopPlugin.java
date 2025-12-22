@@ -1,5 +1,6 @@
 package su.nightexpress.nexshop;
 
+import org.bukkit.entity.Player;
 import su.nightexpress.nightcore.lib.folialib.FoliaLib;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -161,6 +162,10 @@ public class ShopPlugin extends NightPlugin implements ImprovedCommands {
 
     public void runFoliaTask(@NotNull Runnable runnable) {
         this.getFoliaLib().getImpl().runNextTick(task -> runnable.run());
+    }
+
+    public void runTaskAtPlayer(@NotNull Player player, @NotNull Runnable runnable) {
+        this.getFoliaLib().getScheduler().runAtEntity(player, task -> runnable.run());
     }
 
     public void runFoliaTaskAsync(@NotNull Runnable runnable) {

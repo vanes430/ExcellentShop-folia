@@ -172,7 +172,7 @@ public class ShopOptionsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
         });*/
 
         this.addItem(NightItem.fromType(Material.BARRIER), VirtualLocales.SHOP_DELETE, 53, (viewer, event, shop) -> {
-            this.runNextTick(() -> plugin.getShopManager().openConfirmation(viewer.getPlayer(), Confirmation.create(
+            plugin.runTaskAtPlayer(viewer.getPlayer(), () -> plugin.getShopManager().openConfirmation(viewer.getPlayer(), Confirmation.create(
                 (viewer1, event1) -> {
                     module.delete(shop);
                     module.openShopsEditor(viewer1.getPlayer());
