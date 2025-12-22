@@ -84,6 +84,7 @@ public class ShopPlugin extends NightPlugin implements ImprovedCommands {
             return;
         }
 
+        this.modules = new HashMap<>();
         this.loadAPI();
         this.loadCommands();
 
@@ -92,7 +93,6 @@ public class ShopPlugin extends NightPlugin implements ImprovedCommands {
         this.dataHandler.updateStockDatas();
 
         this.dataManager = new DataManager(this);
-        this.dataManager.setup();
 
         this.userManager = new UserManager(this, this.dataHandler);
         this.userManager.setup();
@@ -101,6 +101,7 @@ public class ShopPlugin extends NightPlugin implements ImprovedCommands {
         this.shopManager.setup();
 
         this.loadModules();
+        this.dataManager.setup();
 
         if (Plugins.hasPlaceholderAPI()) {
             PlaceholderHook.setup(this);
