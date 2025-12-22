@@ -49,8 +49,6 @@ public class ShopOptionsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
         }));
 
         this.addItem(Material.NAME_TAG, VirtualIconsLang.ICON_SHOP_NAME, 10, (viewer, event, shop) -> {
-            if (module.handleDialogs(dialogs -> dialogs.openShopNameDialog(viewer.getPlayer(), shop))) return;
-
             this.handleInput(Dialog.builder(viewer, Lang.EDITOR_GENERIC_ENTER_NAME.text(), input -> {
                 shop.setName(input.getText());
                 shop.saveSettings();
@@ -59,8 +57,6 @@ public class ShopOptionsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
         });
 
         this.addItem(Material.LECTERN, VirtualIconsLang.ICON_SHOP_DESCRIPTION, 11, (viewer, event, shop) -> {
-            if (module.handleDialogs(dialogs -> dialogs.openShopDescriptionDialog(viewer.getPlayer(), shop))) return;
-
             if (event.isRightClick()) {
                 shop.getDescription().clear();
                 this.saveAndFlush(viewer, shop);
@@ -77,8 +73,6 @@ public class ShopOptionsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
         // <-- Shop Icon is in #onPrepare -->
 
         this.addItem(NightItem.fromType(Material.COMMAND_BLOCK), VirtualIconsLang.ICON_SHOP_ALIASES, 13, (viewer, event, shop) -> {
-            if (module.handleDialogs(dialogs -> dialogs.openShopAliasesDialog(viewer.getPlayer(), shop))) return;
-
             if (event.isRightClick()) {
                 shop.getAliases().clear();
                 this.saveAndFlush(viewer, shop);
@@ -93,8 +87,6 @@ public class ShopOptionsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
         }, ItemOptions.builder().setVisibilityPolicy(viewer -> VirtualConfig.SHOP_SHORTCUTS_ENABLED.get()).build());
 
         this.addItem(Material.COMPASS, VirtualIconsLang.ICON_SHOP_SLOTS, 14, (viewer, event, shop) -> {
-            if (module.handleDialogs(dialogs -> dialogs.openShopMenuSlotsDialog(viewer.getPlayer(), shop))) return;
-
             if (event.isRightClick()) {
                 shop.clearMenuSlots();
                 this.saveAndFlush(viewer, shop);
@@ -109,8 +101,6 @@ public class ShopOptionsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
         }, ItemOptions.builder().setVisibilityPolicy(viewer -> VirtualConfig.isCentralMenuEnabled()).build());
 
         this.addItem(Material.ENDER_PEARL, VirtualIconsLang.ICON_SHOP_PAGES, 15, (viewer, event, shop) -> {
-            if (module.handleDialogs(dialogs -> dialogs.openShopPagesDialog(viewer.getPlayer(), shop))) return;
-
             int add = event.isLeftClick() ? 1 : -1;
             shop.setPages(shop.getPages() + add);
             this.saveAndFlush(viewer, shop);
@@ -126,8 +116,6 @@ public class ShopOptionsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
 
 
         this.addItem(NightItem.fromType(Material.GLOW_ITEM_FRAME), VirtualLocales.SHOP_EDIT_LAYOUTS, 28, (viewer, event, shop) -> {
-            if (module.handleDialogs(dialogs -> dialogs.openShopLayoutsDialog(viewer.getPlayer(), shop))) return;
-
             this.runNextTick(() -> module.openShopLayouts(viewer.getPlayer(), shop));
         });
 

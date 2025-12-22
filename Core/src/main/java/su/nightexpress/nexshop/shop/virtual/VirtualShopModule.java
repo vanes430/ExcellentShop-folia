@@ -506,6 +506,8 @@ public class VirtualShopModule extends AbstractModule implements ShopModule {
         }
 
         File file = new File(this.getAbsolutePath() + DIR_SHOPS + id, VirtualShop.FILE_NAME);
+        FileUtil.create(file);
+
         VirtualShop shop = new VirtualShop(plugin, this, file, id);
 
         shop.setName(Tags.LIGHT_YELLOW.wrap(Tags.BOLD.wrap(StringUtil.capitalizeUnderscored(id))));
@@ -521,6 +523,8 @@ public class VirtualShopModule extends AbstractModule implements ShopModule {
     }
 
     public boolean delete(@NotNull VirtualShop shop) {
+        this.unloadShopAliases(shop);
+
         if (!FileUtil.deleteRecursive(this.getAbsolutePath() + DIR_SHOPS + shop.getId())) return false;
 
         this.plugin.getDataManager().deleteAllData(shop);

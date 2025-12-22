@@ -42,8 +42,6 @@ public class ShopListMenu extends NormalMenu<ShopPlugin> implements Filled<Virtu
         this.addItem(NightItem.fromType(Material.ANVIL).localized(VirtualIconsLang.ICON_ADD_SHOP).toMenuItem()
             .setSlots(49)
             .setHandler((viewer, event) -> {
-                if (this.module.handleDialogs(dialogs -> dialogs.openShopCreationDialog(viewer.getPlayer()))) return;
-
                 this.handleInput(Dialog.builder(viewer, VirtualLang.EDITOR_ENTER_SHOP_ID.text(), input -> {
                     return module.createShop(viewer.getPlayer(), input.getTextRaw());
                 }));
