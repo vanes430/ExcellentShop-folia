@@ -22,16 +22,16 @@ import su.nightexpress.nightcore.command.experimental.builder.ChainedNodeBuilder
 import su.nightexpress.nightcore.commands.command.NightCommand;
 import su.nightexpress.nightcore.util.CommandUtil;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class VirtualCommands {
 
     private static Set<ServerCommand> commands;
 
-    private static final Map<String, NightCommand> SHOP_ALIASES = new HashMap<>();
+    private static final Map<String, NightCommand> SHOP_ALIASES = new ConcurrentHashMap<>();
 
     public static void load(@NotNull ShopPlugin plugin, @NotNull VirtualShopModule module, @NotNull ChainedNodeBuilder builder) {
         commands = new HashSet<>();

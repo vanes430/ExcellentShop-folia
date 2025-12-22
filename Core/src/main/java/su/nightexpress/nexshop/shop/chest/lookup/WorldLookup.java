@@ -7,6 +7,7 @@ import su.nightexpress.nightcore.util.geodata.pos.BlockPos;
 import su.nightexpress.nightcore.util.geodata.pos.ChunkPos;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class WorldLookup {
 
@@ -14,8 +15,8 @@ public class WorldLookup {
     private final Map<ChunkPos, Set<ChestShop>> byChunkPos;
 
     public WorldLookup() {
-        this.byBlockPos = new HashMap<>();
-        this.byChunkPos = new HashMap<>();
+        this.byBlockPos = new ConcurrentHashMap<>();
+        this.byChunkPos = new ConcurrentHashMap<>();
     }
 
     public void clear() {
@@ -43,7 +44,7 @@ public class WorldLookup {
         ChunkPos chunkPos = blockPos.toChunkPos();
 
         this.byBlockPos.put(blockPos, shop);
-        this.byChunkPos.computeIfAbsent(chunkPos, k -> new HashSet<>()).add(shop);
+        this.byChunkPos.computeIfAbsent(chunkPos, k -> ConcurrentHashMap.newKeySet()).add(shop);
     }
 
     public void remove(@NotNull ChestShop shop) {

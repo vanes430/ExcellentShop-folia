@@ -11,6 +11,7 @@ import su.nightexpress.nightcore.util.geodata.pos.BlockPos;
 import su.nightexpress.nightcore.util.geodata.pos.ChunkPos;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ShopLookup {
 
@@ -20,10 +21,10 @@ public class ShopLookup {
     private final Map<String, WorldLookup>    byWorld;
 
     public ShopLookup() {
-        this.byId = new HashMap<>();
-        this.byWorld = new HashMap<>();
-        this.byOwnerId = new HashMap<>();
-        this.byOwnerName = new HashMap<>();
+        this.byId = new ConcurrentHashMap<>();
+        this.byWorld = new ConcurrentHashMap<>();
+        this.byOwnerId = new ConcurrentHashMap<>();
+        this.byOwnerName = new ConcurrentHashMap<>();
     }
 
     public void clear() {
@@ -103,8 +104,8 @@ public class ShopLookup {
     public void put(@NotNull ChestShop shop) {
         this.byId.put(shop.getId(), shop);
 
-        this.byOwnerId.computeIfAbsent(shop.getOwnerId(), k -> new HashSet<>()).add(shop);
-        this.byOwnerName.computeIfAbsent(shop.getOwnerName().toLowerCase(), k -> new HashSet<>()).add(shop);
+        this.byOwnerId.computeIfAbsent(shop.getOwnerId(), k -> ConcurrentHashMap.newKeySet()).add(shop);
+        this.byOwnerName.computeIfAbsent(shop.getOwnerName().toLowerCase(), k -> ConcurrentHashMap.newKeySet()).add(shop);
         this.byWorld.computeIfAbsent(shop.getWorldName(), k -> new WorldLookup()).add(shop);
     }
 
