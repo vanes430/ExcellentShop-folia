@@ -1,5 +1,6 @@
 package su.nightexpress.nexshop.shop.virtual.editor.product;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -9,7 +10,7 @@ import su.nightexpress.nexshop.ShopPlugin;
 import su.nightexpress.nexshop.api.shop.stock.StockValues;
 import su.nightexpress.nexshop.api.shop.type.TradeType;
 import su.nightexpress.nexshop.config.Lang;
-import su.nightexpress.nexshop.shop.menu.Confirmation;
+import su.nightexpress.nightcore.ui.menu.confirmation.Confirmation;
 import su.nightexpress.nexshop.shop.virtual.VirtualShopModule;
 import su.nightexpress.nexshop.shop.virtual.lang.VirtualLang;
 import su.nightexpress.nexshop.shop.virtual.config.VirtualLocales;
@@ -39,15 +40,16 @@ public class ProductStocksMenu extends LinkedMenu<ShopPlugin, VirtualProduct> {
         }));
 
         this.addItem(ItemUtil.getSkinHead(SKULL_RESET), VirtualLocales.PRODUCT_EDIT_STOCK_RESET, 26, (viewer, event, product) -> {
-            this.runNextTick(() -> plugin.getShopManager().openConfirmation(viewer.getPlayer(), Confirmation.create(
-                (viewer1, event1) -> {
+            Player player = viewer.getPlayer();
+            plugin.getShopManager().openConfirmation(player, Confirmation.builder()
+                .onAccept((viewer1, event1) -> {
                     plugin.getDataManager().resetStockDatas(product);
-                    module.openStockOptions(viewer.getPlayer(), product);
-                },
-                (viewer1, event1) -> {
-                    module.openStockOptions(viewer.getPlayer(), product);
-                }
-            )));
+                    module.openStockOptions(player, product);
+                })
+                .onReturn((viewer1, event1) -> {
+                    module.openStockOptions(player, product);
+                })
+                .build());
         });
 
 

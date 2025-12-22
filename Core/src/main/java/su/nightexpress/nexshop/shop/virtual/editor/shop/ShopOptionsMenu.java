@@ -1,6 +1,7 @@
 package su.nightexpress.nexshop.shop.virtual.editor.shop;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.nexshop.Placeholders;
 import su.nightexpress.nexshop.ShopPlugin;
 import su.nightexpress.nexshop.config.Lang;
-import su.nightexpress.nexshop.shop.menu.Confirmation;
+import su.nightexpress.nightcore.ui.menu.confirmation.Confirmation;
 import su.nightexpress.nexshop.shop.virtual.VirtualShopModule;
 import su.nightexpress.nexshop.shop.virtual.config.VirtualConfig;
 import su.nightexpress.nexshop.shop.virtual.config.VirtualPerms;
@@ -25,6 +26,8 @@ import su.nightexpress.nightcore.ui.menu.click.ClickResult;
 import su.nightexpress.nightcore.ui.menu.item.ItemOptions;
 import su.nightexpress.nightcore.ui.menu.item.MenuItem;
 import su.nightexpress.nightcore.ui.menu.type.LinkedMenu;
+import su.nightexpress.nightcore.util.ItemUtil;
+import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.text.night.wrapper.TagWrappers;
 
@@ -33,6 +36,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ShopOptionsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
+
+    private static final String SKULL_RESET_STOCKS   = "802246ff8b6c617168edaec39660612e72a54ab2eacc27c5e815e4ac70239e3a";
+    private static final String SKULL_RESET_ROTATIONS = "8069cc1666b4ed76587bb1a44fbb7a4375ea03c26d9a47e357b4139e3da28d";
 
     public ShopOptionsMenu(@NotNull ShopPlugin plugin, @NotNull VirtualShopModule module) {
         super(plugin, MenuType.GENERIC_9X6, VirtualLang.EDITOR_TITLE_SHOP_SETTINGS.text());
@@ -145,55 +151,58 @@ public class ShopOptionsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
             this.runNextTick(() -> module.openRotationsList(viewer.getPlayer(), shop));
         });
 
-        // TODO Dialog only
-        /*this.addItem(NightItem.fromType(Material.TNT), VirtualLocales.SHOP_RESET_PRICE_DATA, 45, (viewer, event, shop) -> {
-            this.runNextTick(() -> plugin.getShopManager().openConfirmation(viewer.getPlayer(), Confirmation.create(
-                (viewer1, event1) -> {
+        this.addItem(NightItem.fromType(Material.TNT), VirtualLocales.SHOP_RESET_PRICE_DATA, 45, (viewer, event, shop) -> {
+            Player player = viewer.getPlayer();
+            plugin.getShopManager().openConfirmation(player, Confirmation.builder()
+                .onAccept((viewer1, event1) -> {
                     plugin.getDataManager().resetPriceDatas(shop); // Reset price data (mark all as 'expired').
                     shop.updatePrices(true); // Refresh price values based on fresh, clean data.
-                    module.openShopOptions(viewer1.getPlayer(), shop);
-                },
-                (viewer1, event1) -> {
-                    module.openShopOptions(viewer1.getPlayer(), shop);
-                }
-            )));
-        });*/
-
-        this.addItem(NightItem.fromType(Material.BARRIER), VirtualLocales.SHOP_DELETE, 53, (viewer, event, shop) -> {
-            plugin.runTaskAtPlayer(viewer.getPlayer(), () -> plugin.getShopManager().openConfirmation(viewer.getPlayer(), Confirmation.create(
-                (viewer1, event1) -> {
-                    module.delete(shop);
-                    module.openShopsEditor(viewer1.getPlayer());
-                },
-                (viewer1, event1) -> {
-                    module.openShopOptions(viewer1.getPlayer(), shop);
-                }
-            )));
+                    module.openShopOptions(player, shop);
+                })
+                .onReturn((viewer1, event1) -> {
+                    module.openShopOptions(player, shop);
+                })
+                .build());
         });
 
-        /*this.addItem(ItemUtil.getSkinHead(SKULL_RESET_STOCKS), VirtualLocales.SHOP_RESET_STOCK_DATA, 2, (viewer, event, shop) -> {
-            this.runNextTick(() -> plugin.getShopManager().openConfirmation(viewer.getPlayer(), Confirmation.create(
-                (viewer1, event1) -> {
+        this.addItem(NightItem.fromType(Material.BARRIER), VirtualLocales.SHOP_DELETE, 53, (viewer, event, shop) -> {
+            Player player = viewer.getPlayer();
+            plugin.getShopManager().openConfirmation(player, Confirmation.builder()
+                .onAccept((viewer1, event1) -> {
+                    module.delete(shop);
+                    plugin.runTaskAtPlayer(player, () -> module.openShopsEditor(player));
+                })
+                .onReturn((viewer1, event1) -> {
+                    plugin.runTaskAtPlayer(player, () -> module.openShopOptions(player, shop));
+                })
+                .build());
+        });
+
+        this.addItem(ItemUtil.getSkinHead(SKULL_RESET_STOCKS), VirtualLocales.SHOP_RESET_STOCK_DATA, 2, (viewer, event, shop) -> {
+            Player player = viewer.getPlayer();
+            plugin.getShopManager().openConfirmation(player, Confirmation.builder()
+                .onAccept((viewer1, event1) -> {
                     plugin.getDataManager().resetStockDatas(shop); // Reset stock data (mark all as 'expired').
-                    module.openShopOptions(viewer1.getPlayer(), shop);
-                },
-                (viewer1, event1) -> {
-                    module.openShopOptions(viewer1.getPlayer(), shop);
-                }
-            )));
+                    module.openShopOptions(player, shop);
+                })
+                .onReturn((viewer1, event1) -> {
+                    module.openShopOptions(player, shop);
+                })
+                .build());
         });
 
         this.addItem(ItemUtil.getSkinHead(SKULL_RESET_ROTATIONS), VirtualLocales.SHOP_RESET_ROTATION_DATA, 6, (viewer, event, shop) -> {
-            this.runNextTick(() -> plugin.getShopManager().openConfirmation(viewer.getPlayer(), Confirmation.create(
-                (viewer1, event1) -> {
+            Player player = viewer.getPlayer();
+            plugin.getShopManager().openConfirmation(player, Confirmation.builder()
+                .onAccept((viewer1, event1) -> {
                     shop.performRotation();
-                    module.openShopOptions(viewer1.getPlayer(), shop);
-                },
-                (viewer1, event1) -> {
-                    module.openShopOptions(viewer1.getPlayer(), shop);
-                }
-            )));
-        });*/
+                    module.openShopOptions(player, shop);
+                })
+                .onReturn((viewer1, event1) -> {
+                    module.openShopOptions(player, shop);
+                })
+                .build());
+        });
 
 //        this.addItem(Material.GOLD_NUGGET, VirtualLocales.SHOP_DISCOUNTS, 14, (viewer, event, shop) -> {
 //            // TODO this.runNextTick(() -> this.module.openDiscountsEditor(viewer.getPlayer(), shop));

@@ -24,9 +24,11 @@ import su.nightexpress.nightcore.core.config.CoreLang;
 import su.nightexpress.nightcore.language.entry.LangText;
 import su.nightexpress.nightcore.locale.entry.MessageLocale;
 import su.nightexpress.nightcore.manager.AbstractManager;
+import su.nightexpress.nightcore.ui.UIUtils;
 import su.nightexpress.nightcore.ui.menu.Menu;
 import su.nightexpress.nightcore.ui.menu.MenuRegistry;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
+import su.nightexpress.nightcore.ui.menu.confirmation.Confirmation;
 import su.nightexpress.nightcore.util.ItemUtil;
 
 import java.io.File;
@@ -39,7 +41,6 @@ public class ShopManager extends AbstractManager<ShopPlugin> {
 
     private final Map<String, CartMenu> cartMenuMap;
 
-    private ConfirmMenu confirmMenu;
     private PurchaseOptionMenu purchaseOptionMenu;
 
     public ShopManager(@NotNull ShopPlugin plugin) {
@@ -68,7 +69,6 @@ public class ShopManager extends AbstractManager<ShopPlugin> {
     }
 
     private void loadUI() {
-        this.confirmMenu = this.addMenu(new ConfirmMenu(this.plugin));
         this.purchaseOptionMenu = new PurchaseOptionMenu(this.plugin);
     }
 
@@ -250,6 +250,6 @@ public class ShopManager extends AbstractManager<ShopPlugin> {
     }
 
     public void openConfirmation(@NotNull Player player, @NotNull Confirmation confirmation) {
-        this.confirmMenu.open(player, confirmation);
+        UIUtils.openConfirmation(player, confirmation);
     }
 }

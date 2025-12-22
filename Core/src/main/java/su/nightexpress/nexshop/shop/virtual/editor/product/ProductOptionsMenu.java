@@ -1,6 +1,7 @@
 package su.nightexpress.nexshop.shop.virtual.editor.product;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -13,7 +14,7 @@ import su.nightexpress.nexshop.api.shop.product.typing.PhysicalTyping;
 import su.nightexpress.nexshop.api.shop.product.typing.ProductTyping;
 import su.nightexpress.nexshop.api.shop.product.typing.VanillaTyping;
 import su.nightexpress.nexshop.product.type.ProductTypes;
-import su.nightexpress.nexshop.shop.menu.Confirmation;
+import su.nightexpress.nightcore.ui.menu.confirmation.Confirmation;
 import su.nightexpress.nexshop.shop.virtual.VirtualShopModule;
 import su.nightexpress.nexshop.shop.virtual.lang.VirtualLang;
 import su.nightexpress.nexshop.shop.virtual.config.VirtualLocales;
@@ -52,8 +53,9 @@ public class ProductOptionsMenu extends LinkedMenu<ShopPlugin, VirtualProduct> {
         }));
 
         this.addItem(NightItem.asCustomHead(SKULL_DELETE), VirtualLocales.PRODUCT_DELETE, 53, (viewer, event, product) -> {
-            this.runNextTick(() -> plugin.getShopManager().openConfirmation(viewer.getPlayer(), Confirmation.create(
-                (viewer1, event1) -> {
+            Player player = viewer.getPlayer();
+            plugin.getShopManager().openConfirmation(player, Confirmation.builder()
+                .onAccept((viewer1, event1) -> {
                     int page = product.getPage();
                     boolean rotating = product.isRotating();
                     VirtualShop shop = product.getShop();
@@ -62,14 +64,14 @@ public class ProductOptionsMenu extends LinkedMenu<ShopPlugin, VirtualProduct> {
                     shop.saveProducts();
 
                     if (rotating) {
-                        module.openRotatingsProducts(viewer.getPlayer(), shop);
+                        module.openRotatingsProducts(player, shop);
                     }
-                    else module.openNormalProducts(viewer.getPlayer(), shop, page);
-                },
-                (viewer1, event1) -> {
-                    module.openProductOptions(viewer1.getPlayer(), product);
-                }
-            )));
+                    else module.openNormalProducts(player, shop, page);
+                })
+                .onReturn((viewer1, event1) -> {
+                    module.openProductOptions(player, product);
+                })
+                .build());
         });
 
         // =============================================

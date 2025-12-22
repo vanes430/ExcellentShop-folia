@@ -1,6 +1,7 @@
 package su.nightexpress.nexshop.shop.menu;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -20,6 +21,7 @@ import su.nightexpress.nexshop.util.ShopUtils;
 import su.nightexpress.nightcore.language.entry.LangUIButton;
 import su.nightexpress.nightcore.ui.dialog.Dialog;
 import su.nightexpress.nightcore.ui.menu.MenuViewer;
+import su.nightexpress.nightcore.ui.menu.confirmation.Confirmation;
 import su.nightexpress.nightcore.ui.menu.data.LinkHandler;
 import su.nightexpress.nightcore.ui.menu.item.ItemHandler;
 import su.nightexpress.nightcore.ui.menu.item.ItemOptions;
@@ -62,16 +64,17 @@ public abstract class ProductPriceMenu<T extends AbstractProduct<?>> extends Lin
         }).build());
 
         this.addItem(NightItem.asCustomHead(SKULL_RESET), Lang.PRODUCT_PRICE_RESET, 28, (viewer, event, product) -> {
-            this.runNextTick(() -> plugin.getShopManager().openConfirmation(viewer.getPlayer(), Confirmation.create(
-                (viewer1, event1) -> {
+            Player player = viewer.getPlayer();
+            plugin.getShopManager().openConfirmation(player, Confirmation.builder()
+                .onAccept((viewer1, event1) -> {
                     plugin.getDataManager().resetPriceData(product);
                     product.updatePrice(true);
-                    this.open(viewer1.getPlayer(), product);
-                },
-                (viewer1, event1) -> {
-                    this.open(viewer1.getPlayer(), product);
-                }
-            )));
+                    this.open(player, product);
+                })
+                .onReturn((viewer1, event1) -> {
+                    this.open(player, product);
+                })
+                .build());
         }, ItemOptions.builder().setVisibilityPolicy(this::canResetPriceData).build());
     }
 
