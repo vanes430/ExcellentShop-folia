@@ -33,18 +33,18 @@ public abstract class AbstractDialogProvider<T> implements DialogProvider<T>, La
     @Override
     public void closeAndThen(@NotNull Player player, T source, @NotNull BiConsumer<Player, T> consumer) {
         this.close(player);
-        consumer.accept(player, source);
+        this.plugin.runFoliaTask(() -> consumer.accept(player, source));
     }
 
     @Override
     public void closeAndThen(@NotNull Player player, T source, @NotNull Consumer<Player> consumer) {
         this.close(player);
-        consumer.accept(player);
+        this.plugin.runFoliaTask(() -> consumer.accept(player));
     }
 
     @Override
     public void closeAndThen(@NotNull Player player, T source, @NotNull Runnable runnable) {
         this.close(player);
-        runnable.run();
+        this.plugin.runFoliaTask(runnable);
     }
 }

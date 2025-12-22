@@ -48,6 +48,7 @@ import java.io.File;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -89,8 +90,8 @@ public class VirtualShopModule extends AbstractModule implements ShopModule {
     public VirtualShopModule(@NotNull ShopPlugin plugin, @NotNull String id, @NotNull ModuleConfig config) {
         super(plugin, id, config);
 
-        this.layoutByIdMap = new HashMap<>();
-        this.shopByIdMap = new HashMap<>();
+        this.layoutByIdMap = new ConcurrentHashMap<>();
+        this.shopByIdMap = new ConcurrentHashMap<>();
     }
 
     @Override
