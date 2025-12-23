@@ -526,10 +526,10 @@ public class ChestShopModule extends AbstractModule implements ShopModule {
         this.shopBrowserMenu.openFromShop(player, source);
     }
 
-    public boolean teleportToShop(@NotNull Player player, @NotNull ChestShop shop) {
+    public void teleportToShop(@NotNull Player player, @NotNull ChestShop shop) {
         if (!shop.isActive()) {
             this.getPrefixed(ChestLang.ERROR_SHOP_INACTIVE).send(player);
-            return false;
+            return;
         }
 
         Location location = shop.location().getTeleportLocation();
@@ -537,11 +537,11 @@ public class ChestShopModule extends AbstractModule implements ShopModule {
         if (ChestConfig.CHECK_SAFE_LOCATION.get()) {
             if (!shop.isOwner(player) && !ChestUtils.isSafeLocation(location)) {
                 this.getPrefixed(ChestLang.SHOP_TELEPORT_ERROR_UNSAFE).send(player);
-                return false;
+                return;
             }
         }
 
-        return player.teleport(location);
+        player.teleportAsync(location);
     }
 
     @Deprecated
