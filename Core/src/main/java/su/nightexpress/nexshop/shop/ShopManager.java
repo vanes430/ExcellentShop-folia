@@ -138,7 +138,7 @@ public class ShopManager extends AbstractManager<ShopPlugin> {
 
     public void onProductClick(@NotNull Player player, @NotNull Product product, @NotNull ClickType clickType, @NotNull Menu source) {
         if (!product.isAvailable(player)) {
-            source.plugin.runTaskAtPlayer(player, () -> source.flush(player));
+            this.plugin.runTaskAtPlayer(player, () -> source.flush(player));
             return;
         }
 
