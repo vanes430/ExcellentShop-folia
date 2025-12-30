@@ -155,7 +155,7 @@ public class SellMenu extends ConfigMenu<ShopPlugin> implements Linked<List<Item
 
             items.add(new ItemStack(item));
             item.setAmount(0);
-            this.runNextTick(() -> this.flush(viewer));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
         }
     }
 

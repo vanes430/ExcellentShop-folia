@@ -80,7 +80,7 @@ public abstract class ProductPriceMenu<T extends AbstractProduct<?>> extends Lin
 
     protected void saveAndFlush(@NotNull MenuViewer viewer, @NotNull T product) {
         this.save(viewer, product);
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     protected abstract void save(@NotNull MenuViewer viewer, @NotNull T product);

@@ -189,7 +189,9 @@ public class VirtualCommands {
         Player player = CommandUtil.getPlayerOrSender(context, arguments, CommandArguments.PLAYER);
         if (player == null) return false;
 
-        module.sellAll(player, arguments.hasFlag(CommandFlags.SILENT));
+        module.plugin().runTaskAtPlayer(player, () -> {
+            module.sellAll(player, arguments.hasFlag(CommandFlags.SILENT));
+        });
 
         if (player != context.getSender()) {
             VirtualLang.COMMAND_SELL_ALL_DONE_OTHERS.message().send(context.getSender(), replacer -> replacer.replace(Placeholders.forPlayer(player)));
@@ -201,7 +203,9 @@ public class VirtualCommands {
         Player player = CommandUtil.getPlayerOrSender(context, arguments, CommandArguments.PLAYER);
         if (player == null) return false;
 
-        module.sellSlots(player, player.getInventory().getHeldItemSlot());
+        module.plugin().runTaskAtPlayer(player, () -> {
+            module.sellSlots(player, player.getInventory().getHeldItemSlot());
+        });
 
         if (player != context.getSender()) {
             VirtualLang.COMMAND_SELL_HAND_DONE_OTHERS.message().send(context.getSender(), replacer -> replacer.replace(Placeholders.forPlayer(player)));
@@ -213,22 +217,24 @@ public class VirtualCommands {
         Player player = CommandUtil.getPlayerOrSender(context, arguments, CommandArguments.PLAYER);
         if (player == null) return false;
 
-        PlayerInventory inventory = player.getInventory();
+        module.plugin().runTaskAtPlayer(player, () -> {
+            PlayerInventory inventory = player.getInventory();
 
-        ItemStack itemStack = inventory.getItemInMainHand();
-        if (itemStack.getType().isAir()) return false;
+            ItemStack itemStack = inventory.getItemInMainHand();
+            if (itemStack.getType().isAir()) return;
 
-        Set<Integer> slots = new HashSet<>();
-        slots.add(inventory.getHeldItemSlot());
+            Set<Integer> slots = new HashSet<>();
+            slots.add(inventory.getHeldItemSlot());
 
-        for (int slot = 0; slot < inventory.getStorageContents().length; slot++) {
-            ItemStack content = inventory.getItem(slot);
-            if (content == null || !content.isSimilar(itemStack)) continue;
+            for (int slot = 0; slot < inventory.getStorageContents().length; slot++) {
+                ItemStack content = inventory.getItem(slot);
+                if (content == null || !content.isSimilar(itemStack)) continue;
 
-            slots.add(slot);
-        }
+                slots.add(slot);
+            }
 
-        module.sellSlots(player, slots.stream().mapToInt(i -> i).toArray());
+            module.sellSlots(player, slots.stream().mapToInt(i -> i).toArray());
+        });
 
         if (player != context.getSender()) {
             VirtualLang.COMMAND_SELL_HAND_DONE_OTHERS.message().send(context.getSender(), replacer -> replacer.replace(Placeholders.forPlayer(player)));

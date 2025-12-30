@@ -433,7 +433,7 @@ public class AuctionManager extends AbstractModule {
         }
 
         listing.getCurrency().take(buyer, price);
-        Players.addItem(buyer, listing.getItemStack());
+        this.plugin.runTaskAtPlayer(buyer, () -> Players.addItem(buyer, listing.getItemStack()));
 
         CompletedListing completedListing = CompletedListing.create(listing, buyer);
 

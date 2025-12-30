@@ -69,7 +69,7 @@ public class ShopLayoutsMenu extends LinkedMenu<ShopPlugin, VirtualShop> impleme
                 if (event.isRightClick()) {
                     shop.removePageLayout(page);
                     shop.saveSettings();
-                    this.runNextTick(() -> this.flush(viewer));
+                    this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
                     return;
                 }
 

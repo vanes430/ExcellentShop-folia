@@ -42,7 +42,7 @@ public class UnclaimedListingsMenu extends AbstractAuctionMenu<CompletedListing>
         autoFill.setClickAction(listing -> (viewer1, event) -> {
             Player player = viewer.getPlayer();
             this.auctionManager.claimRewards(player, Lists.newList(listing));
-            this.runNextTick(() -> this.flush(viewer));
+            this.plugin.runTaskAtPlayer(player, () -> this.flush(viewer));
         });
     }
 

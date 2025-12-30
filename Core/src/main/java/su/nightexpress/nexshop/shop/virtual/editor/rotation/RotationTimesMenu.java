@@ -77,7 +77,7 @@ public class RotationTimesMenu extends LinkedMenu<ShopPlugin, Rotation> implemen
                         try {
                             rotation.getRotationTimes(day).add(LocalTime.parse(input.getTextRaw(), ShopUtils.TIME_FORMATTER));
                             rotation.getShop().saveRotations();
-                            this.runNextTick(() -> this.flush(viewer));
+                            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
                         }
                         catch (DateTimeParseException ignored) {}
                         return true;
@@ -87,7 +87,7 @@ public class RotationTimesMenu extends LinkedMenu<ShopPlugin, Rotation> implemen
                 else if (event.isRightClick()) {
                     rotation.getRotationTimes(day).clear();
                     rotation.getShop().saveRotations();
-                    this.runNextTick(() -> this.flush(viewer));
+                    this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
                 }
             })
             .build();

@@ -211,7 +211,7 @@ public class ShopOptionsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
 
     private void saveAndFlush(@NotNull MenuViewer viewer, @NotNull VirtualShop shop) {
         shop.saveSettings();
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     @Override

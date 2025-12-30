@@ -46,23 +46,23 @@ public abstract class AbstractAuctionMenu<A extends AbstractListing> extends Con
         this.link = new ViewLink<>();
 
         this.addHandler(this.returnHandler = ItemHandler.forReturn(this, (viewer, event) -> {
-            this.runNextTick(() -> this.auctionManager.openAuction(viewer.getPlayer()));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.auctionManager.openAuction(viewer.getPlayer()));
         }));
 
         this.addHandler(this.expiredHandler = new ItemHandler("expired_listings", (viewer, event) -> {
-            this.runNextTick(() -> this.auctionManager.openExpiedListings(viewer.getPlayer()));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.auctionManager.openExpiedListings(viewer.getPlayer()));
         }));
 
         this.addHandler(this.historyHandler = new ItemHandler("sales_history", (viewer, event) -> {
-            this.runNextTick(() -> this.auctionManager.openSalesHistory(viewer.getPlayer()));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.auctionManager.openSalesHistory(viewer.getPlayer()));
         }));
 
         this.addHandler(this.unclaimedHandler = new ItemHandler("unclaimed_items", (viewer, event) -> {
-            this.runNextTick(() -> this.auctionManager.openUnclaimedListings(viewer.getPlayer()));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.auctionManager.openUnclaimedListings(viewer.getPlayer()));
         }));
 
         this.addHandler(this.listingsHandler = new ItemHandler("own_listings", (viewer, event) -> {
-            this.runNextTick(() -> this.auctionManager.openPlayerListings(viewer.getPlayer()));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.auctionManager.openPlayerListings(viewer.getPlayer()));
         }));
     }
 

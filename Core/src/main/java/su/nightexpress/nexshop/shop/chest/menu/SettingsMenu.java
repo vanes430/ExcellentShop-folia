@@ -131,7 +131,7 @@ public class SettingsMenu extends LinkedMenu<ShopPlugin, ChestShop> implements C
         shop.updateStockCache();
         shop.setSaveRequired(true);
         this.module.getDisplayManager().remake(shop);
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     private void handleRemove(@NotNull MenuViewer viewer) {
@@ -175,7 +175,7 @@ public class SettingsMenu extends LinkedMenu<ShopPlugin, ChestShop> implements C
             shop.setBuyingAllowed(!shop.isBuyingAllowed());
         }
         shop.setSaveRequired(true);
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     @Override

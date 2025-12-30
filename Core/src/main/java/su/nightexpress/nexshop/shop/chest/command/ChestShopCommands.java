@@ -187,7 +187,7 @@ public class ChestShopCommands {
 
         ItemStack itemStack = shopBlock.getItemStack();
         itemStack.setAmount(amount);
-        Players.addItem(player, itemStack);
+        module.plugin().runTaskAtPlayer(player, () -> Players.addItem(player, itemStack));
 
         module.getPrefixed(ChestLang.COMMAND_GIVE_ITEM_DONE).send(context.getSender(), replacer -> replacer
             .replace(Placeholders.GENERIC_NAME, ItemUtil.getNameSerialized(itemStack))

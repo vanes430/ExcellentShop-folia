@@ -203,7 +203,7 @@ public class ProductOptionsMenu extends LinkedMenu<ShopPlugin, VirtualProduct> {
 
     private void saveAndFlush(@NotNull MenuViewer viewer, @NotNull VirtualProduct product) {
         product.save();
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     @Override

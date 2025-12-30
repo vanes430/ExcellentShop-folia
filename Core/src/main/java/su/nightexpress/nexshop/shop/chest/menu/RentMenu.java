@@ -65,7 +65,7 @@ public class RentMenu extends LinkedMenu<ShopPlugin, ChestShop> implements Confi
         shop.getRentSettings().setEnabled(state);
         shop.setSaveRequired(true);
         this.module.getDisplayManager().remake(shop);
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     private void handleDuration(@NotNull MenuViewer viewer) {
@@ -101,7 +101,7 @@ public class RentMenu extends LinkedMenu<ShopPlugin, ChestShop> implements Confi
         shop.getRentSettings().setPrice(shop.getRentSettings().getPrice(), true); // Limit price when currency changed.
         shop.setSaveRequired(true);
 
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     private void handleCancel(@NotNull MenuViewer viewer) {

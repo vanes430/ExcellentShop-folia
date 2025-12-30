@@ -377,9 +377,11 @@ public class VirtualShop extends AbstractShop<VirtualProduct> {
         if (rotated.get() == 0) return false;
 
         Players.getOnline().forEach(player -> {
-            if (!this.canAccess(player, false)) return;
+            this.plugin.runTaskAtPlayer(player, () -> {
+                if (!this.canAccess(player, false)) return;
 
-            VirtualLang.SHOP_ROTATION_NOTIFY.message().send(player, replacer -> replacer.replace(Placeholders.GENERIC_AMOUNT, rotated.get()).replace(this.replacePlaceholders()));
+                VirtualLang.SHOP_ROTATION_NOTIFY.message().send(player, replacer -> replacer.replace(Placeholders.GENERIC_AMOUNT, rotated.get()).replace(this.replacePlaceholders()));
+            });
         });
 
         return true;

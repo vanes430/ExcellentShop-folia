@@ -150,7 +150,7 @@ public class BankMenu extends LinkedMenu<ShopPlugin, BankMenu.Data> implements F
         if (all) {
             this.module.depositToBank(player, holder, currency, currency.getBalance(player));
             this.module.savePlayerBank(bank);
-            this.runNextTick(() -> this.flush(viewer));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
             return;
         }
 
@@ -172,7 +172,7 @@ public class BankMenu extends LinkedMenu<ShopPlugin, BankMenu.Data> implements F
         if (all) {
             this.module.withdrawFromBank(player, holder, currency, bank.getBalance(currency));
             this.module.savePlayerBank(bank);
-            this.runNextTick(() -> this.flush(viewer));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
             return;
         }
 

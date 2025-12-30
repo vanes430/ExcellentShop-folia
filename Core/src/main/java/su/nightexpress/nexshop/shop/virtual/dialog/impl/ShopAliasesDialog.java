@@ -96,7 +96,7 @@ public class ShopAliasesDialog extends VirtualDialogProvider<VirtualShop> {
 
         if (reload) {
             this.module.reloadShopAliases(shop);
-            Players.getOnline().forEach(Player::updateCommands);
+            Players.getOnline().forEach(player -> this.module.plugin().runTaskAtPlayer(player, player::updateCommands));
         }
 
         this.closeAndThen(user, shop, this.module::openShopOptions);

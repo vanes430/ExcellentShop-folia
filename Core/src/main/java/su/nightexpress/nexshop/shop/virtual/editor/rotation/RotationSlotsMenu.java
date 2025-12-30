@@ -122,7 +122,7 @@ public class RotationSlotsMenu extends LinkedMenu<ShopPlugin, Rotation> {
 
                         rotation.removeSlot(page, slot);
                         shop.saveRotations();
-                        this.runNextTick(() -> this.flush(viewer1));
+                        this.plugin.runTaskAtPlayer(viewer1.getPlayer(), () -> this.flush(viewer1));
                     }));
 
                 freeSlots.remove(slot);
@@ -139,7 +139,7 @@ public class RotationSlotsMenu extends LinkedMenu<ShopPlugin, Rotation> {
 //                .setHandler((viewer1, event) -> {
 //                    rotation.removeSlot(page, slot);
 //                    shop.saveRotations();
-//                    this.runNextTick(() -> this.flush(viewer));
+//                    this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
 //                }));
 //
 //            freeSlots.remove(slot);
@@ -153,7 +153,7 @@ public class RotationSlotsMenu extends LinkedMenu<ShopPlugin, Rotation> {
             .setHandler((viewer1, event) -> {
                 rotation.addSlot(page, event.getRawSlot());
                 shop.saveRotations();
-                this.runNextTick(() -> this.flush(viewer));
+                this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
             }));
     }
 

@@ -117,12 +117,12 @@ public class RotationOptionsMenu extends LinkedMenu<ShopPlugin, Rotation> {
 
     private void save(@NotNull MenuViewer viewer, @NotNull Rotation rotation) {
         rotation.getShop().saveRotations();
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     private void saveAndFlush(@NotNull MenuViewer viewer, @NotNull Rotation rotation) {
         this.save(viewer, rotation);
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     @Override

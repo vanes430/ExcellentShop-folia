@@ -166,7 +166,7 @@ public class ProductsMenu extends LinkedMenu<ShopPlugin, ProductsMenu.Data> impl
         shop.setSaveRequired(true);
         this.module.getDisplayManager().remake(shop);
 
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     @Override
@@ -213,7 +213,7 @@ public class ProductsMenu extends LinkedMenu<ShopPlugin, ProductsMenu.Data> impl
         product.setPrice(tradeType, -1D);
         shop.setSaveRequired(true);
 
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     private void handleCurrency(@NotNull MenuViewer viewer) {
@@ -232,7 +232,7 @@ public class ProductsMenu extends LinkedMenu<ShopPlugin, ProductsMenu.Data> impl
         product.setCurrency(currencies.get(index));
         shop.setSaveRequired(true);
 
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     private void handleRestock(@NotNull MenuViewer viewer, boolean all) {
@@ -245,7 +245,7 @@ public class ProductsMenu extends LinkedMenu<ShopPlugin, ProductsMenu.Data> impl
             if (units == 0) return;
 
             this.module.depositToShop(player, product, units);
-            this.runNextTick(() -> this.flush(viewer));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
             return;
         }
 
@@ -264,7 +264,7 @@ public class ProductsMenu extends LinkedMenu<ShopPlugin, ProductsMenu.Data> impl
         if (all) {
             int units = product.countUnitAmount();
             this.module.withdrawFromShop(player, product, units);
-            this.runNextTick(() -> this.flush(viewer));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
             return;
         }
 

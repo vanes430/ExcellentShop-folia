@@ -85,7 +85,7 @@ public class ShowcaseMenu extends LinkedMenu<ShopPlugin, ChestShop> implements F
                 if (!shop.isShowcaseEnabled()) return;
 
                 this.handleChange(viewer1, shop1 -> shop1.setShowcaseId(showcase.getId()));
-                this.runNextTick(() -> this.flush(viewer1));
+                this.plugin.runTaskAtPlayer(viewer1.getPlayer(), () -> this.flush(viewer1));
             })
             .build();
     }
@@ -117,11 +117,11 @@ public class ShowcaseMenu extends LinkedMenu<ShopPlugin, ChestShop> implements F
         this.module.getDisplayManager().remake(shop);
 
         shop.setSaveRequired(true);
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     private void handleReturn(@NotNull MenuViewer viewer) {
-        this.runNextTick(() -> this.module.openShopSettings(viewer.getPlayer(), this.getLink(viewer)));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.module.openShopSettings(viewer.getPlayer(), this.getLink(viewer)));
     }
 
     @Override

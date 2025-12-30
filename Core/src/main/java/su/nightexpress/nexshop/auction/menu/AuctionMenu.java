@@ -80,7 +80,7 @@ public class AuctionMenu extends AbstractAuctionMenu<ActiveListing> {
             Player player = viewer.getPlayer();
             SortType type = getListingOrder(player);
             setListingOrder(player, event.isLeftClick() ? Lists.next(type) : Lists.previous(type));
-            this.runNextTick(() -> this.flush(viewer));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
         }));
 
         this.addHandler(this.categoryHandler = new ItemHandler("category_filter", (viewer, event) -> {
@@ -88,13 +88,13 @@ public class AuctionMenu extends AbstractAuctionMenu<ActiveListing> {
             ListingCategory current = this.getCategory(viewer.getPlayer());
             ListingCategory selected = Lists.shifted(categories, categories.indexOf(current), event.isLeftClick() ? 1 : -1);
             CATEGORY.put(viewer.getPlayer(), selected);
-            this.runNextTick(() -> this.flush(viewer));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
         }));
 
         this.addHandler(this.currencyHandler = new ItemHandler("currency_filter", (viewer, event) -> {
             if (event.isShiftClick() && event.isRightClick()) {
                 CURRENCY.remove(viewer.getPlayer());
-                this.runNextTick(() -> this.flush(viewer));
+                this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
                 return;
             }
 
@@ -102,7 +102,7 @@ public class AuctionMenu extends AbstractAuctionMenu<ActiveListing> {
             Currency current = this.getCurrency(viewer.getPlayer());
             Currency selected = Lists.shifted(currencies, currencies.indexOf(current), event.isLeftClick() ? 1 : -1);
             CURRENCY.put(viewer.getPlayer(), selected);
-            this.runNextTick(() -> this.flush(viewer));
+            this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
         }));
 
         this.load();
@@ -254,7 +254,7 @@ public class AuctionMenu extends AbstractAuctionMenu<ActiveListing> {
             if ((event.isShiftClick() && event.isRightClick()) || (isOwner && isBedrock)) {
                 if (isOwner|| player.hasPermission(AuctionPerms.LISTING_REMOVE_OTHERS)) {
                     this.auctionManager.takeListing(player, listing);
-                    this.runNextTick(() -> this.flush(viewer));
+                    this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
                 }
                 return;
             }

@@ -44,7 +44,7 @@ public class PlayerListingsMenu extends AbstractAuctionMenu<ActiveListing>  {
             Player player = viewer.getPlayer();
             if (event.isRightClick() || Players.isBedrock(player)) {
                 this.auctionManager.takeListing(player, item);
-                this.runNextTick(() -> this.flush(player));
+                this.plugin.runTaskAtPlayer(player, () -> this.flush(player));
             }
         });
     }

@@ -92,7 +92,7 @@ public class DiscountMainEditor extends EditorMenu<ShopPlugin, VirtualDiscount> 
 
     private void saveAndFlush(@NotNull MenuViewer viewer, @NotNull Shop shop) {
         shop.saveSettings();
-        this.runNextTick(() -> this.flush(viewer));
+        this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
     }
 
     @Override

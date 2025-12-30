@@ -40,7 +40,7 @@ public class ExpiredListingsMenu extends AbstractAuctionMenu<ActiveListing> {
             this.auctionManager.getListings().getExpired(player).forEach(listing -> {
                 this.auctionManager.takeListing(player, listing);
             });
-            this.runNextTick(() -> this.flush(player));
+            this.plugin.runTaskAtPlayer(player, () -> this.flush(player));
         }));
 
         this.load();
@@ -53,7 +53,7 @@ public class ExpiredListingsMenu extends AbstractAuctionMenu<ActiveListing> {
         autoFill.setClickAction(item -> (viewer1, event) -> {
             Player player = viewer1.getPlayer();
             this.auctionManager.takeListing(player, item);
-            this.runNextTick(() -> this.flush(viewer));
+            this.plugin.runTaskAtPlayer(player, () -> this.flush(viewer));
         });
     }
 

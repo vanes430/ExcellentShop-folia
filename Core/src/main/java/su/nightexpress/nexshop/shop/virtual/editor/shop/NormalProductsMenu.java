@@ -225,7 +225,7 @@ public class NormalProductsMenu extends LinkedMenu<ShopPlugin, VirtualShop> {
                 shop.addProduct(product);
                 shop.saveProduct(product);
                 event.getView().setCursor(null);
-                this.runNextTick(() -> this.flush(viewer));
+                this.plugin.runTaskAtPlayer(viewer.getPlayer(), () -> this.flush(viewer));
             }));
     }
 
