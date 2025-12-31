@@ -51,7 +51,10 @@ public class CartMenu extends LinkedMenu<ShopPlugin, Breadcumb<PreparedProduct>>
     }
 
     private void onAmountClick(@NotNull MenuViewer viewer, @NotNull Function<Integer, Integer> function) {
-        PreparedProduct product = this.getLink(viewer).source();
+        Breadcumb<PreparedProduct> bread = this.getLink(viewer);
+        if (bread == null) return;
+
+        PreparedProduct product = bread.source();
 
         product.setUnits(function.apply(product.getUnits()));
         this.productSound.play(viewer.getPlayer());
@@ -144,7 +147,10 @@ public class CartMenu extends LinkedMenu<ShopPlugin, Breadcumb<PreparedProduct>>
         if (viewer.hasItem(menuItem)) return;
 
         Player player = viewer.getPlayer();
-        PreparedProduct prepared = this.getLink(player).source();
+        Breadcumb<PreparedProduct> bread = this.getLink(player);
+        if (bread == null) return;
+
+        PreparedProduct prepared = bread.source();
         Currency currency = prepared.getProduct().getCurrency();
 
         item.replacement(replacer -> replacer
@@ -188,6 +194,7 @@ public class CartMenu extends LinkedMenu<ShopPlugin, Breadcumb<PreparedProduct>>
             .setHandler(new ItemHandler("confirm", (viewer, event) -> {
                 Player player = viewer.getPlayer();
                 var breadcumb = this.getLink(player);
+                if (breadcumb == null) return;
                 int page = breadcumb.page();
                 PreparedProduct preparedProduct = breadcumb.source();
                 Product product = preparedProduct.getProduct();
@@ -213,6 +220,7 @@ public class CartMenu extends LinkedMenu<ShopPlugin, Breadcumb<PreparedProduct>>
             .setHandler(new ItemHandler("decline", (viewer, event) -> {
                 Player player = viewer.getPlayer();
                 var breadcumb = this.getLink(player);
+                if (breadcumb == null) return;
                 Product product = breadcumb.source().getProduct();
                 int page = breadcumb.page();
 
@@ -275,6 +283,7 @@ public class CartMenu extends LinkedMenu<ShopPlugin, Breadcumb<PreparedProduct>>
             .toMenuItem().setSlots(41).setHandler(new ItemHandler("set_custom", (viewer, event) -> {
                 Player player = viewer.getPlayer();
                 var breadcumb = this.getLink(viewer);
+                if (breadcumb == null) return;
                 this.cache.addAnchor(player);
 
                 DialogManager.startDialog(Dialog.builder(viewer, input -> {

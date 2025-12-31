@@ -41,7 +41,9 @@ public class PurchaseOptionMenu extends LinkedMenu<ShopPlugin, Breadcumb<Product
 
     private void onOptionClick(@NotNull MenuViewer viewer, @NotNull TradeType type) {
         Player player = viewer.getPlayer();
-        Product product = this.getLink(player).source();
+        Breadcumb<Product> bread = this.getLink(player);
+        if (bread == null) return;
+        Product product = bread.source();
 
         if (!product.isTradeable(type)) return;
 
@@ -54,7 +56,9 @@ public class PurchaseOptionMenu extends LinkedMenu<ShopPlugin, Breadcumb<Product
 
         if (viewer.hasItem(menuItem)) return;
 
-        Product product = this.getLink(viewer).source();
+        Breadcumb<Product> bread = this.getLink(viewer);
+        if (bread == null) return;
+        Product product = bread.source();
 
         item.replacement(replacer -> replacer.replace(product.replacePlaceholders(viewer.getPlayer())));
     }
@@ -64,7 +68,9 @@ public class PurchaseOptionMenu extends LinkedMenu<ShopPlugin, Breadcumb<Product
         Inventory inventory = view.getTopInventory();
 
         if (this.productSlot >= 0 && this.productSlot <= inventory.getSize()) {
-            Product product = this.getLink(viewer).source();
+            Breadcumb<Product> bread = this.getLink(viewer);
+            if (bread == null) return;
+            Product product = bread.source();
 
             this.addItem(viewer, NightItem.fromItemStack(product.getPreview()).toMenuItem().setSlots(this.productSlot));
         }
@@ -80,6 +86,8 @@ public class PurchaseOptionMenu extends LinkedMenu<ShopPlugin, Breadcumb<Product
         loader.addHandler(ItemHandler.forReturn(this, (viewer, event) -> {
             Player player = viewer.getPlayer();
             var breadcumb = this.getLink(player);
+            if (breadcumb == null) return;
+
             Product product = breadcumb.source();
 
             this.runNextTick(() -> product.getShop().open(player, breadcumb.page(), true));
