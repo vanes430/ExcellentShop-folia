@@ -23,5 +23,5 @@ softdepend:
   - MMOItems
   - ExcellentCrates
   - VotingPlugin
-api-version: 1.18
+api-version: 1.21
 folia-supported: true
